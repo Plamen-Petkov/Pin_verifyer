@@ -1,1 +1,1 @@
-# Pin_verifyer
+check bulgarian PIN is valid
