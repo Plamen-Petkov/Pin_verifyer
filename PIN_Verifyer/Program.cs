@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace PIN_Check
 {
@@ -8,66 +9,48 @@ namespace PIN_Check
         {
             int[] weights = { 2, 4, 8, 5, 10, 9, 7, 3, 6 };
 
-            ulong pin = ulong.Parse(Console.ReadLine());
+            var pin = Console.ReadLine();
 
-            ulong[] pinArray = new ulong[10];
-            ulong year = 0;
-            ulong month = 0;
-            ulong date = 0;
+            int[] pinArray = new int[10];
+            var year = int.Parse(pin.Substring(0, 2));
+            var month = int.Parse(pin.Substring(2, 2));
+            var date = int.Parse(pin.Substring(4, 2));
             int sum = 0;
 
-            // Make a PIN number to an array
-            for (int i = 9; i >= 0; i--)
+            for (int i = 0; i < pin.Length; i++)
             {
-                ulong result = pin % 10;
-                pinArray[i] = result;
-                pin = pin / 10;
-                if (i == 2)
-                {
-                    year = pin; //Save Year
-                }
-                if (i == 4)
-                {
-                    month = pin % 100; //Saving Month
-                }
-                if (i == 6)
-                {
-                    date = pin % 100; //Saving Day
-                }
+                pinArray[i] = pin[i] - '0';
+                
             }
-
-
-            if (date <= 31 && (month <= 12 || (month >= 41 && month <= 52))) //Check valid date of birth
+                        
+            if (date <= 31 && (month <= 12 || (month >= 41 && month <= 52)) && pin.Length==10) //Check valid date of birth and pin Length
             {
                 for (int i = 0; i < weights.Length; i++)
                 {
-                    sum = sum + weights[i] * (int)pinArray[i];
+                    sum = sum + weights[i] * pinArray[i];
                 }
+                
                 sum = sum % 11;
+
                 if (sum == 10)
                 {
                     sum = 0;
                 }
-                if (sum == (int)pinArray[9]) //
+
+                if (sum == pinArray[9]) //
                 {
-                    Console.Write($"PIN:");
-                    for (int i = 0; i < pinArray.Length; i++)
-                    {
-                        Console.Write(pinArray[i]);
-                    }
-                    Console.WriteLine(" is valid!!!");
+                    Console.Write($"PIN: {pin} is valid!!!");
+                }
+                else
+                {
+                    Console.Write($"PIN: {pin} is Invalid!!!");
                 }
             }
             else
             {
-                Console.Write($"PIN:");
-                for (int i = 0; i < pinArray.Length; i++)
-                {
-                    Console.Write(pinArray[i]);
-                }
-                Console.WriteLine(" is Invalid!!!");
+                Console.Write($"PIN: {pin} not recognized or incomplete");
             }
-
+            
 
         }
     }
